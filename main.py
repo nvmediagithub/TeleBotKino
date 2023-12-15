@@ -27,27 +27,28 @@ def get_text(message):
     print(message.text)
     if message.text == 'Случайный фильм':
         movie_poster, movie_text = get_random_movie()
-        bot.send_message(message.chat.id, movie_text)
-        # bot.send_message(message.chat.id, movie_poster)
-        # bot.send_photo(
-        #     chat_id=message.chat.id,
-        #     photo=movie_poster,
-        #     caption=movie_text,
-        #     reply_markup=keyboard
-        # )
+        bot.send_photo(
+            chat_id=message.chat.id,
+            photo=movie_poster,
+            caption=movie_text,
+            reply_markup=keyboard
+        )
     elif message.text == 'Оставить отзыв':
         msg = bot.send_message(message.chat.id, 'Введите текст отзыва:')
         bot.register_next_step_handler(msg, get_review)
 
 
 def get_random_movie():
-    print('TRY START 1')
-    response = requests.get(API_URL, headers={'X-API-KEY': API_TOKEN})
-    print('TRY START 2')
+    response = requests.get(API_URL, params={
+        "notNullFields": [
+            "poster.url"
+        ]
+    }, headers={
+        'X-API-KEY': API_TOKEN
+    })
     response.encoding = 'utf-8'
-    print('TRY START 3')
+    print(response.text)
     random_movie = response.json()
-    print('TRY START 4')
     movie_text = f'🎬 Фильм: {random_movie["names"][0]["name"]}\n\n'
     movie_text += f'{random_movie["description"]}\n\n'
     movie_text += f'👀 Рейтинг на кинопоиске: {random_movie["rating"]["kp"]}\n'
@@ -60,6 +61,7 @@ def get_random_movie():
             movie_text += f'⏯️ Трейлер: {random_movie["videos"]["trailers"][-1]["url"]}'
         elif 'teasers' in random_movie:
             movie_text += f'📺 *Трейлер:* {random_movie["videos"]["teasers"][-1]["url"]}'
+    print(random_movie)
     movie_poster = random_movie['poster']['url']
     return movie_poster, movie_text
 
