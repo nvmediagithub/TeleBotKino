@@ -3,8 +3,8 @@ from telebot.types import ReplyKeyboardMarkup
 import telebot
 
 API_URL = 'https://api.kinopoisk.dev/v1.4/movie/random'
-API_TOKEN = 'SQDRFD7-P4Y4GDT-GDAQTAP-Z8MXW1V'
-TELEGRAM_TOKEN = '6202232789:AAFCjFfSWfWJ1KRNVnQXyXvPIfObCwjfJ6Y'
+API_TOKEN = ''
+TELEGRAM_TOKEN = ''
 ADMINISTRATOR_ID = 'ID АДМИНИСТРАТОРА'
 
 bot = telebot.TeleBot(TELEGRAM_TOKEN)
